@@ -12,6 +12,25 @@ const browse = (req, res) => {
     });
 };
 
+const getUserByEmailWithPasswordAndPassToNext = (req, res, next) => {
+  const { email } = req.body;
+
+  models.user
+    .findUserInfoByEmail(email)
+    .then(([rows]) => {
+      if (rows[0] == null) {
+        res.sendStatus(404);
+      } else {
+        [req.user] = rows;
+        next();
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+
 const read = (req, res) => {
   models.user
     .find(req.params.id)
@@ -87,4 +106,5 @@ module.exports = {
   edit,
   add,
   destroy,
+  getUserByEmailWithPasswordAndPassToNext,
 };
