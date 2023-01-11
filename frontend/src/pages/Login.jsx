@@ -1,8 +1,10 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import axios from "axios";
+import { AuthContext } from "../services/AuthContext";
 
 function Login() {
+  const { setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -27,6 +29,7 @@ function Login() {
     if (Object.keys(newErrors).length === 0) {
       try {
         await axios.post("http://localhost:5000/users/login", userInformations);
+        setAuth({ isAuthenticated: true });
         navigate("/");
       } catch (error) {
         console.error(error);

@@ -1,7 +1,9 @@
 import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Register() {
+  const navigate = useNavigate();
   const firstNameRef = useRef();
   const lastNameRef = useRef();
   const emailRef = useRef();
@@ -45,6 +47,7 @@ function Register() {
     if (Object.keys(newErrors).length === 0) {
       try {
         await axios.post("http://localhost:5000/users", userInformations);
+        navigate("/login");
       } catch (error) {
         console.error(error);
       }
