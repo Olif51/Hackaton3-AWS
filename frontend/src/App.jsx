@@ -1,9 +1,10 @@
 import "./App.css";
+import Register from "./pages/Register";
 
 function App() {
   return (
-    <div className="App">
-      <p>coucou</p>
+    <div className="h-screen">
+      <Register />
     </div>
   );
 }
