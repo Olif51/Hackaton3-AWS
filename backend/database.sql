@@ -9,12 +9,17 @@ CREATE TABLE user (
     id INT AUTO_INCREMENT PRIMARY KEY,
     firstname VARCHAR(255) NOT NULL,
     lastname VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
     hashedPassword VARCHAR(255) NOT NULL,
     rental_history TEXT,
-    prime_status TINYINT(1) NOT NULL DEFAULT 0,
+    prime_status BOOLEAN NOT NULL DEFAULT FALSE,
     role ENUM('admin', 'user') NOT NULL DEFAULT 'user'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO user (firstname, lastname, email, hashedPassword, prime_status, role) 
+VALUES ('John', 'Doe', 'basicuser@mail.com', '$argon2id$v=19$m=65536,t=5,p=1$3fVq3IWd1+YIoIgt92Z3kw$Lt6M1wv2M4x8GI2C3ggI8PrtgieelyY+9dKxdsrUghM', FALSE, 'user')
+, ('Jane', 'Doe', 'primeuser@mail.com','$argon2id$v=19$m=65536,t=5,p=1$3fVq3IWd1+YIoIgt92Z3kw$Lt6M1wv2M4x8GI2C3ggI8PrtgieelyY+9dKxdsrUghM', TRUE, 'user')
+, ('Jack', 'User', 'admin@mail.com', '$argon2id$v=19$m=65536,t=5,p=1$3fVq3IWd1+YIoIgt92Z3kw$Lt6M1wv2M4x8GI2C3ggI8PrtgieelyY+9dKxdsrUghM', TRUE, 'admin');
 
 CREATE TABLE vehicle (
     id INT AUTO_INCREMENT PRIMARY KEY,

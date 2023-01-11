@@ -14,5 +14,6 @@ const userControllers = require("./controllers/userControllers");
 const hashPassword = require("./services/auth");
 
 router.post("/users", hashPassword, userControllers.add);
+router.get("/users", userControllers.browse);
 
 module.exports = router;

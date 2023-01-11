@@ -44,9 +44,7 @@ function Register() {
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
       try {
-        await axios.post("http://localhost:5000/users", {
-          userInformations,
-        });
+        await axios.post("http://localhost:5000/users", userInformations);
       } catch (error) {
         console.error(error);
       }
