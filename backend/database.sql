@@ -5,6 +5,16 @@ CREATE TABLE item (
 
 INSERT INTO item (title) VALUES ('Stuff'), ('Doodads');
 
+CREATE TABLE user (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    firstname VARCHAR(255) NOT NULL,
+    lastname VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    hashedPassword VARCHAR(255) NOT NULL,
+    rental_history TEXT NOT NULL DEFAULT '',
+    Amazon_Prime_status ENUM('yes','no') NOT NULL DEFAULT 'no',
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE vehicle (
     vehicle_id INT AUTO_INCREMENT PRIMARY KEY,
     model VARCHAR(255) NOT NULL,
@@ -22,13 +32,6 @@ CREATE TABLE location (
     parking_spaces INT NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE user (
-    user_id INT AUTO_INCREMENT PRIMARY KEY,
-    account_info VARCHAR(255) NOT NULL,
-    payment_info VARCHAR(255) NOT NULL,
-    rental_history TEXT,
-    Amazon_Prime_status ENUM('yes','no') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE reservation (
     reservation_id INT AUTO_INCREMENT PRIMARY KEY,
