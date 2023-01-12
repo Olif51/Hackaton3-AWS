@@ -41,7 +41,7 @@ function Map({ vehicles, setToggleTab, myPosition }) {
       </div>
       <div style={styles.parentContainer}>
         <MapContainer
-          center={myPosition}
+          center={[myPosition.latitude, myPosition.longitude]}
           zoom={13}
           ref={mapRef}
           style={styles.parentContainer}
@@ -50,7 +50,12 @@ function Map({ vehicles, setToggleTab, myPosition }) {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           />
-          {myPosition && <Marker position={myPosition} icon={customMarker} />}
+          {myPosition && (
+            <Marker
+              position={[myPosition.latitude, myPosition.longitude]}
+              icon={customMarker}
+            />
+          )}
           {vehicles.map((vehicle) => {
             return (
               <Marker
