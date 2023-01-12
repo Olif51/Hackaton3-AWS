@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import car from "../assets/car.png";
 
-function Map({ vehicles, setToggleTab }) {
-  const [center, setCenter] = useState([49.2571531, 4.0199563]);
-  const [markerPosition, setMarkerPosition] = useState(null);
+function Map({ vehicles, setToggleTab, myPosition }) {
   const mapRef = useRef(null);
   const styles = {
     parentContainer: {
@@ -30,20 +28,6 @@ function Map({ vehicles, setToggleTab }) {
     iconSize: [60, 60], // size of the icon
   });
 
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setCenter([position.coords.latitude, position.coords.longitude]);
-        setMarkerPosition([
-          position.coords.latitude,
-          position.coords.longitude,
-        ]);
-      });
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  }, [center]);
-
   return (
     <>
       <div className="w-full h-[10vh] flex justify-center items-center bg-slate-100">
@@ -57,7 +41,7 @@ function Map({ vehicles, setToggleTab }) {
       </div>
       <div style={styles.parentContainer}>
         <MapContainer
-          center={center}
+          center={myPosition}
           zoom={13}
           ref={mapRef}
           style={styles.parentContainer}
@@ -66,16 +50,12 @@ function Map({ vehicles, setToggleTab }) {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           />
-          {markerPosition && (
-            <Marker position={markerPosition} icon={customMarker} />
-          )}
+          {myPosition && <Marker position={myPosition} icon={customMarker} />}
           {vehicles.map((vehicle) => {
-            const lat = vehicle.coordinates.split(",")[0];
-            const lng = vehicle.coordinates.split(",")[1];
             return (
               <Marker
                 key={vehicle.id}
-                position={[lat, lng]}
+                position={[vehicle.latitude, vehicle.longitude]}
                 icon={customCarIcon}
               />
             );
@@ -96,6 +76,7 @@ Map.propTypes = {
     })
   ).isRequired,
   setToggleTab: PropTypes.func.isRequired,
+  myPosition: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 export default Map;

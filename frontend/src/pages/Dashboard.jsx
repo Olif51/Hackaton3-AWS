@@ -8,7 +8,15 @@ function Dashboard() {
   const { auth } = React.useContext(AuthContext);
   const [vehicles, setVehicles] = useState([]);
   const [toggleTab, setToggleTab] = useState("list");
+  const [myPosition, setMyPosition] = useState([]);
   useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setMyPosition([position.coords.latitude, position.coords.longitude]);
+      });
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
     const getVehicles = async () => {
       const config = {
         headers: {
@@ -28,13 +36,18 @@ function Dashboard() {
     };
     getVehicles();
   }, []);
+
   return (
     <>
       {toggleTab === "list" && (
         <VehicleList vehicles={vehicles} setToggleTab={setToggleTab} />
       )}
       {toggleTab === "map" && (
-        <Map vehicles={vehicles} setToggleTab={setToggleTab} />
+        <Map
+          vehicles={vehicles}
+          setToggleTab={setToggleTab}
+          myPosition={myPosition}
+        />
       )}
     </>
   );
