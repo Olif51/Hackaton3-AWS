@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
+import PropTypes from "prop-types";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import car from "../assets/car.png";
 
-export default function MyMap() {
+function Map({ vehicles, setToggleTab }) {
   const [center, setCenter] = useState([49.2571531, 4.0199563]);
   const [markerPosition, setMarkerPosition] = useState(null);
   const mapRef = useRef(null);
@@ -11,14 +13,20 @@ export default function MyMap() {
     parentContainer: {
       position: "relative",
       width: "100vw",
-      height: "100vh",
+      height: "90vh",
       padding: 0,
       margin: 0,
     },
   };
+
   const customMarker = L.icon({
     iconUrl:
       "https://cdn0.iconfinder.com/data/icons/navigation-and-gps/48/navigate_location_human-512.png",
+    iconSize: [60, 60], // size of the icon
+  });
+
+  const customCarIcon = L.icon({
+    iconUrl: car,
     iconSize: [60, 60], // size of the icon
   });
 
@@ -37,21 +45,57 @@ export default function MyMap() {
   }, [center]);
 
   return (
-    <div style={styles.parentContainer}>
-      <MapContainer
-        center={center}
-        zoom={13}
-        ref={mapRef}
-        style={styles.parentContainer}
-      >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        />
-        {markerPosition && (
-          <Marker position={markerPosition} icon={customMarker} />
-        )}
-      </MapContainer>
-    </div>
+    <>
+      <div className="w-full h-[10vh] flex justify-center items-center bg-slate-100">
+        <button
+          type="button"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg m-4 h-1/2"
+          onClick={() => setToggleTab("list")}
+        >
+          Return to the car list
+        </button>
+      </div>
+      <div style={styles.parentContainer}>
+        <MapContainer
+          center={center}
+          zoom={13}
+          ref={mapRef}
+          style={styles.parentContainer}
+        >
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          />
+          {markerPosition && (
+            <Marker position={markerPosition} icon={customMarker} />
+          )}
+          {vehicles.map((vehicle) => {
+            const lat = vehicle.coordinates.split(",")[0];
+            const lng = vehicle.coordinates.split(",")[1];
+            return (
+              <Marker
+                key={vehicle.id}
+                position={[lat, lng]}
+                icon={customCarIcon}
+              />
+            );
+          })}
+        </MapContainer>
+      </div>
+    </>
   );
 }
+
+Map.propTypes = {
+  vehicles: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      car_maker: PropTypes.string.isRequired,
+      car_model: PropTypes.string.isRequired,
+      location_status: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  setToggleTab: PropTypes.func.isRequired,
+};
+
+export default Map;
