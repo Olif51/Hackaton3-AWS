@@ -1,7 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-function VehicleList({ vehicles, setToggleTab, myPosition }) {
+function VehicleList({
+  vehicles,
+  setToggleTab,
+  myPosition,
+  selectedCar,
+  setSelectedCar,
+}) {
   const toRad = (degrees) => (degrees * Math.PI) / 180;
   const distanceInKm = (lat1, lon1, lat2, lon2) => {
     const earthRadiusKm = 6371;
@@ -53,22 +59,37 @@ function VehicleList({ vehicles, setToggleTab, myPosition }) {
         </button>
         <ul className="grid grid-cols-1 gap-4 m-4">
           {sortedVehicles.map((vehicle) => (
-            <li key={vehicle.id} className="p-4 rounded-md bg-gray-200">
-              <div>
+            <li
+              key={vehicle.id}
+              className={`p-4 rounded-md shadow-md ${
+                selectedCar.id === vehicle.id ? "bg-blue-500" : "bg-gray-200"
+              }`}
+            >
+              <button
+                type="button"
+                className="flex flex-col items-center justify-center w-full h-full rounded-md"
+                onClick={() => setSelectedCar(vehicle)}
+              >
                 <h2 className="text-xl font-medium">{vehicle.car_maker}</h2>
                 <p className="text-base">{vehicle.car_model}</p>
                 <p className="text-base">
                   {vehicle.distance.toFixed(2) * 1000} m
                 </p>
                 <p className="text-base">{vehicle.location_status}</p>
-              </div>
+              </button>
             </li>
           ))}
         </ul>
       </div>
-      <div className="fixed bottom-0 w-full bg-black text-center h-12 flex items-center justify-center">
-        <p className="text-2xl font-medium text-gray-600">Rent the car !</p>
-      </div>
+      <button
+        type="button"
+        className={`fixed bottom-2 w-5/6 text-center h-12 flex items-center justify-center left-1/2 -translate-x-1/2 rounded-xl shadow-md ${
+          selectedCar.id ? "bg-blue-500" : "bg-gray-500"
+        }`}
+        onClick={() => setToggleTab("rent")}
+      >
+        <p className="text-2xl font-medium text-white">Rent the car !</p>
+      </button>
     </>
   );
 }
@@ -84,6 +105,13 @@ VehicleList.propTypes = {
   ).isRequired,
   setToggleTab: PropTypes.func.isRequired,
   myPosition: PropTypes.arrayOf(PropTypes.number).isRequired,
+  selectedCar: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    car_maker: PropTypes.string.isRequired,
+    car_model: PropTypes.string.isRequired,
+    location_status: PropTypes.string.isRequired,
+  }).isRequired,
+  setSelectedCar: PropTypes.func.isRequired,
 };
 
 export default VehicleList;

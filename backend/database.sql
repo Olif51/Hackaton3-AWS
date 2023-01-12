@@ -63,3 +63,9 @@ CREATE TABLE rental (
     FOREIGN KEY (user_id) REFERENCES user(id),
     FOREIGN KEY (vehicle_id) REFERENCES vehicle(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO rental (user_id, vehicle_id, start_date, end_date, total_price)
+VALUES (1, 1, '2020-01-01 00:00:00', '2020-01-02 00:00:00', 100)
+, (1, 2, '2020-01-02 00:00:00', '2020-01-03 00:00:00', 100)
+, (1, 3, '2020-01-03 00:00:00', '2020-01-04 00:00:00', 100)
+, (1, 4, '2020-01-04 00:00:00', '2020-01-05 00:00:00', 100)

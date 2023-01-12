@@ -4,8 +4,9 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import car from "../assets/car.png";
+import locker from "../assets/location-pin.png";
 
-function Map({ vehicles, setToggleTab, myPosition }) {
+function Map({ vehicles, setToggleTab, myPosition, amazonLockers }) {
   const mapRef = useRef(null);
   const styles = {
     parentContainer: {
@@ -25,6 +26,11 @@ function Map({ vehicles, setToggleTab, myPosition }) {
 
   const customCarIcon = L.icon({
     iconUrl: car,
+    iconSize: [60, 60], // size of the icon
+  });
+
+  const customLockerIcon = L.icon({
+    iconUrl: locker,
     iconSize: [60, 60], // size of the icon
   });
 
@@ -69,6 +75,18 @@ function Map({ vehicles, setToggleTab, myPosition }) {
               </Marker>
             );
           })}
+          {amazonLockers.map((amazonLocker) => {
+            return (
+              <Marker
+                position={[amazonLocker.latitude, amazonLocker.longitude]}
+                icon={customLockerIcon}
+              >
+                <Popup className="text-xl font-medium">
+                  {amazonLocker.address}
+                </Popup>
+              </Marker>
+            );
+          })}
         </MapContainer>
       </div>
     </>
@@ -86,6 +104,13 @@ Map.propTypes = {
   ).isRequired,
   setToggleTab: PropTypes.func.isRequired,
   myPosition: PropTypes.arrayOf(PropTypes.number).isRequired,
+  amazonLockers: PropTypes.arrayOf(
+    PropTypes.shape({
+      address: PropTypes.string.isRequired,
+      latitude: PropTypes.number.isRequired,
+      longitude: PropTypes.number.isRequired,
+    })
+  ).isRequired,
 };
 
 export default Map;
