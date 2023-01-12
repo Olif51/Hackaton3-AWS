@@ -8,6 +8,7 @@ import ProtectedRoute from "./services/ProtectedRoute";
 import { AuthContext } from "./services/AuthContext";
 import Footer from "./components/Footer";
 import Dashboard from "./pages/Dashboard";
+import Navbar from "./components/navbar";
 
 function App() {
   const location = useLocation();
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/Navbar" element={<Navbar />} />
         <Route
           path="/"
           element={
