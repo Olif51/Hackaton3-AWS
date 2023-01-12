@@ -30,4 +30,9 @@ router.delete("/items/:id", itemControllers.destroy);
 // routes for users
 router.get("/users", userControllers.browse);
 
+// routes for vehicles
+const vehicleControllers = require("./controllers/vehicleControllers");
+
+router.get("/vehicles", vehicleControllers.browse);
+
 module.exports = router;

@@ -13,7 +13,7 @@ function App() {
   const location = useLocation();
   const { auth } = useContext(AuthContext);
   return (
-    <div className="min-h-screen">
+    <div className="h-screen w-screen relative">
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />

@@ -28,8 +28,11 @@ function Login() {
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
       try {
-        await axios.post("http://localhost:5000/users/login", userInformations);
-        setAuth({ isAuthenticated: true });
+        const response = await axios.post(
+          "http://localhost:5000/users/login",
+          userInformations
+        );
+        setAuth({ isAuthenticated: true, token: response.data.token });
         navigate("/");
       } catch (error) {
         console.error(error);
