@@ -9,3 +9,6 @@ Content-Type: application/json
   "email": "mounir.mekoui@gmail.com",
   "password": "password123"
 }
+
+###
+GET http://localhost:5000/vehicles
