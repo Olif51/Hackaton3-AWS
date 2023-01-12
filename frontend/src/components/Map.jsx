@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import car from "../assets/car.png";
@@ -62,7 +62,11 @@ function Map({ vehicles, setToggleTab, myPosition }) {
                 key={vehicle.id}
                 position={[vehicle.latitude, vehicle.longitude]}
                 icon={customCarIcon}
-              />
+              >
+                <Popup className="text-xl font-medium">
+                  {vehicle.car_maker} {vehicle.car_model}
+                </Popup>
+              </Marker>
             );
           })}
         </MapContainer>
