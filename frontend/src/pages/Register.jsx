@@ -54,7 +54,12 @@ function Register() {
   };
 
   return (
-    <section className="h-screen w-screen flex items-center">
+    <section className="h-screen w-screen flex flex-col items-center">
+      <img
+        className="mx-auto h-20 w-auto mt-10"
+        src="../src/assets/pictures/logo.png"
+        alt="logo"
+      />
       <form
         className="w-full bg-white p-6 rounded-lg mx-auto"
         onSubmit={handleSubmit}
